@@ -9,56 +9,72 @@
 
     <Button
         android:id="@+id/camera_capture_button"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="150dp"
-        android:scaleType="fitCenter"
+        android:layout_width="110dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginBottom="15dp"
+        android:elevation="2dp"
         android:text="Take Photo"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:elevation="2dp" />
+        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <EditText
         android:id="@+id/camera_timelapse_interval"
-        android:layout_width="200dp"
+        android:layout_width="116dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="25dp"
+        android:background="#6B7252AC"
+        android:elevation="2dp"
         android:scaleType="fitCenter"
-        android:background="#90FFFFFF"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:elevation="2dp"  />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/camera_start_timelapse"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="50dp"
+        android:layout_width="110dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="15dp"
+        android:elevation="2dp"
         android:scaleType="fitCenter"
         android:text="Start"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:elevation="2dp" />
+        app:layout_constraintHorizontal_bias="0.947"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/camera_stop_timelapse"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="50dp"
+        android:layout_width="110dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="15dp"
+        android:elevation="2dp"
         android:scaleType="fitCenter"
         android:text="Stop"
         android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:elevation="2dp" />
+        app:layout_constraintHorizontal_bias="0.947"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/frames_counter"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="0"
+        android:textSize="20dp"
+        android:elevation="2dp"
+        android:textColor="#247FCF" />
 
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="100dp"
+        android:layout_marginTop="10dp">
+    </androidx.camera.view.PreviewView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

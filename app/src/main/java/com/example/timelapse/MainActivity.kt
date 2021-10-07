@@ -3,13 +3,19 @@ package com.example.timelapse
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.Rational
+import android.view.OrientationEventListener
+import android.view.Surface
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
@@ -21,6 +27,8 @@ import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
+import java.util.concurrent.TimeUnit
+
 typealias LumaListener = (luma: Double) -> Unit
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
 
     private var timer: Timer? = null
+    private var currentFrame: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +54,8 @@ class MainActivity : AppCompatActivity() {
 
         camera_capture_button.setOnClickListener { takePhoto() }
         camera_start_timelapse.setOnClickListener { startButtonHandler() }
-        camera_stop_timelapse.setOnClickListener() { stopButtonHandler() }
+        camera_stop_timelapse.setOnClickListener { stopButtonHandler() }
 
-        outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
@@ -71,11 +79,13 @@ class MainActivity : AppCompatActivity() {
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
 
+        frames_counter.text = currentFrame.toString()
+
         // Create time-stamped output file to hold the image
         val photoFile = File(
             outputDirectory,
-            SimpleDateFormat(FILENAME_FORMAT, Locale.US
-            ).format(System.currentTimeMillis()) + ".jpg")
+            "frame_" + currentFrame.toString() + ".jpg")
+        currentFrame++
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
@@ -98,6 +108,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startButtonHandler() {
+
+        currentFrame = 0
+        frames_counter.text = "0"
+
+        outputDirectory = getOutputDirectory()
+
         camera_start_timelapse.visibility = View.GONE
         camera_stop_timelapse.visibility = View.VISIBLE
 
@@ -105,6 +121,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun stopButtonHandler() {
+
+        currentFrame = 0
+        frames_counter.text = "0"
+
         camera_start_timelapse.visibility = View.VISIBLE
         camera_stop_timelapse.visibility = View.GONE
 
@@ -180,7 +200,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun getOutputDirectory(): File {
         val mediaDir = externalMediaDirs.firstOrNull()?.let {
-            File(it, resources.getString(R.string.app_name)).apply { mkdirs() } }
+            File(it,
+                    resources.getString(R.string.app_name) + "/" + // app name
+                    SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis()) // start date
+            ).apply { mkdirs() } }
         return if (mediaDir != null && mediaDir.exists())
             mediaDir else filesDir
     }
